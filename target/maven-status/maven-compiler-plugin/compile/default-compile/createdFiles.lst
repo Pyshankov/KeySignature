@@ -1,0 +1,8 @@
+com/key/signature/SecurityConfig$CustomUserDetailsService$CustomUserDetails.class
+com/key/signature/domain/User.class
+com/key/signature/SecurityConfig$CustomUserDetailsService.class
+com/key/signature/SecurityConfig$CsrfHeaderFilter.class
+com/key/signature/DemoApplication.class
+com/key/signature/domain/User$Role.class
+com/key/signature/domain/UserRepository.class
+com/key/signature/SecurityConfig.class
