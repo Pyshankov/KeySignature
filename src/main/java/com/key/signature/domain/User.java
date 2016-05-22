@@ -26,7 +26,7 @@ public class User implements java.io.Serializable {
     @Column(name = "isActivated",nullable = false)
     private boolean isActivated;
 
-    @Column(name = "keyHandWriting")
+    @Column(name = "keyHandWriting", length = 3000)
     private String keyHandWriting;
 
     public User(String userName,String password){

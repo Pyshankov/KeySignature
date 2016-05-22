@@ -1,0 +1,29 @@
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-md-5 col-md-offset-3">
+            <h1>Registration</h1>
+
+            <form role="form">
+
+                <fieldset class="form-group">
+                    <label for="username">User name</label>
+                    <input ng-model="user.userName" type="text"  class="form-control" id="username" placeholder="Input your user name">
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <label  for="textToVerify">I certify this action as my own original act in accordance with site Honor Code.</label>
+                    <input ng-model="textToVerify" ng-keyup="keyUpEvent()" type="text" class="form-control" id="textToVerify" placeholder="please,write text above">
+                </fieldset>
+                  <button ng-click="registerUser()" type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <div class="alert alert-danger" ng-show="errorMes" >
+                {{errorMessage}}
+            </div>
+
+        </div>
+
+    </div>
+    </div>
