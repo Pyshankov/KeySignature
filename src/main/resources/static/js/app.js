@@ -3,8 +3,11 @@
 // Declare app level module which depends on views, and components
 var handWritingApp = angular.module('handWritingApp', [
   'ngRoute',
-  'handWritingController'
+  'handWritingController',
+  'ngCookies'
 ]);
+
+
 
 handWritingApp.config(['$routeProvider',
   function($routeProvider) {
@@ -26,3 +29,4 @@ handWritingApp.config(['$routeProvider',
     });
     
   }]);
+

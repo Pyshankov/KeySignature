@@ -8,18 +8,20 @@
             <form>
                 <fieldset class="form-group">
                     <label for="formGroupExampleInput">User name</label>
-                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Input your user name">
+                    <input type="text" class="form-control" ng-model="credentials.username" id="formGroupExampleInput" placeholder="Input your user name">
                 </fieldset>
                 <fieldset class="form-group">
-                    <label  for="formGroupExampleInput2">I certify this action as my own original act in accordance with site Honor Code</label>
-                    <input  type="text" class="form-control" id="formGroupExampleInput2" placeholder="please,write text above">
+                    <label  for="formGroupExampleInput2">I certify this action as my own original act in accordance with site Honor Code.</label>
+                    <input ng-model="textToVerifyLogin" ng-keyup="keyUpEventLogin()" type="text" class="form-control" id="formGroupExampleInput2" placeholder="please,write text above">
                 </fieldset>
 
-                <button ng-click="login()" type="submit" class="btn btn-primary center-block">Sign in</button>
+                <button ng-click="authenticate()" type="submit" class="btn btn-primary center-block">Sign in</button>
             </form>
-            {{keyEventsTime}}
+            <div class="alert alert-danger" ng-show="errorMesLogin" >
+                {{errorMessageLogin}}
+            </div>
         </div>
-
+                {{keyEventsLoginTime}}
     </div>
 
 

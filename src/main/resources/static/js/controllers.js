@@ -4,8 +4,12 @@
 
 var handWritingController = angular.module('handWritingController', []);
 
-handWritingController.controller('welcomePageCtrl', ['$scope', '$http',
-  function($scope, $http) {
+handWritingController.controller('welcomePageCtrl', ['$scope', '$http' ,'$rootScope','$location','$cookies',
+  function($scope, $http , $rootScope,$location,$cookies) {
+
+    $rootScope.authenticated = $cookies.get('isAuth');
+    if($rootScope.authenticated==false) $location.path('login');
+
 
     $http.get('http://localhost:9001/user/1').success(function(data) {
       $scope.user = data;
@@ -27,10 +31,10 @@ handWritingController.controller('registrationCtrl', ['$scope','$http' ,'$routeP
     self.lastKeyUpTime=new Date().getTime();
 
     $scope.keyUpEvent = function(){
-      $scope.keyEventsTime.push(new Date().getTime()-self.lastKeyUpTime);
+      $scope.keyEventsTime.push(new Date().getTime()-self.lastKeyUpTime);   ;
       self.lastKeyUpTime=new Date().getTime();
       console.log(new Date().getTime());
-      $scope.user.keyHandWriting=$scope.keyEventsTime.toString()
+      $scope.user.keyHandWriting=$scope.keyEventsTime
 
     };
     
@@ -43,7 +47,7 @@ handWritingController.controller('registrationCtrl', ['$scope','$http' ,'$routeP
 
       $scope.user={
         "userName" : $scope.user.userName
-        ,"keyHandWriting" : $scope.user.keyHandWriting.toString()
+        ,"keyHandWriting" : $scope.user.keyHandWriting.slice(1).toString()
       }
 
       var usr = JSON.stringify($scope.user);
@@ -64,59 +68,66 @@ handWritingController.controller('registrationCtrl', ['$scope','$http' ,'$routeP
   }]);
 
 
-handWritingController.controller('loginCtrl', ['$scope',  '$http' , '$location' , '$rootScope',
-  function($scope,$http,$location,$rootScope) {
+handWritingController.controller('loginCtrl', ['$scope',  '$http' , '$location' , '$rootScope','$cookies',
+  function($scope,$http,$location,$rootScope,$cookies) {
 
+    
     var self = this;
     self.textToReproduce="I certify this action as my own original act in accordance with site Honor Code.";
-    $scope.keyEventsTime=[];
-    $scope.textToVerify="";
-    self.lastKeyUpTime=new Date().getTime();
-
-    $scope.keyUpEvent = function(){
-      $scope.keyEventsTime.push(new Date().getTime()-self.lastKeyUpTime);   ;
-      self.lastKeyUpTime=new Date().getTime();
+    $scope.keyEventsLoginTime=[];
+    $scope.textToVerifyLogin="";
+    $scope.errorMessageLogin="";
+    self.lastKeyUpTimeLogin=new Date().getTime();
+    $scope.credentials ={};
+    $scope.keyUpEventLogin = function(){
+      $scope.keyEventsLoginTime.push(new Date().getTime()-self.lastKeyUpTimeLogin);   ;
+      self.lastKeyUpTimeLogin=new Date().getTime();
       console.log(new Date().getTime());
-      $scope.credentials.keyHandWriting=$scope.keyEventsTime.toString()
-
+      $scope.credentials.keyHandWriting=$scope.keyEventsLoginTime
     };
 
-    var authenticate = function(credentials, callback) {
+    $scope.authenticate = function () {
 
-      var headers = credentials ? {authorization : "Basic "
-      + btoa(credentials.username + ":" + ""),
-        userHandWriting : credentials.keyHandWriting
-      } : {};
+      if($scope.textToVerifyLogin!=self.textToReproduce){
+        $scope.errorMesLogin=true;
+        $scope.errorMessageLogin="text dosen't match";
+        return;
+      }
+      self.user={
+        "userName" : $scope.credentials.username
+        ,"keyHandWriting" : $scope.credentials.keyHandWriting.slice(1).toString()
+      }
+      var usr = JSON.stringify(self.user);
+      var res = $http.post("http://localhost:9001/api/logIn",usr);
 
-      $http.get('http://localhost:9001/principal', {headers : headers}).then(function(response) {
-        if (response.data.name) {
-          $rootScope.authenticated = true;
-        } else {
-          $rootScope.authenticated = false;
+      res.success(function(data, status, headers, config) {
+        $rootScope.authenticated=data.authenticated;
+        if( $rootScope.authenticated===true){
+          $cookies.put("isAuth",$rootScope.authenticated);
+          $location.path('/account');
         }
-        callback && callback();
-      }, function() {
-        $rootScope.authenticated = false;
-        callback && callback();
+        console.log($rootScope.authenticated);
+      });
+
+      res.error(function(data, status, headers, config) {
+        $scope.errorMesLogin=true;
+        $scope.errorMessageLogin=data.message;
+      });
+    }
+    
+    $rootScope.logout = function(){
+      var res = $http.post("http://localhost:9001/api/logOut");
+      
+      res.success(function(data, status, headers, config) {
+        $rootScope.authenticated=data.authenticated;
+        if( $rootScope.authenticated===false){
+          $cookies.put("isAuth",$rootScope.authenticated);
+          $location.path('/login');
+        }
+        console.log($rootScope.authenticated);
       });
 
     }
 
-    authenticate();
-    $scope.credentials = {};
-
-   $scope.login = function() {
-      authenticate(self.credentials, function() {
-        if ($rootScope.authenticated) {
-          $location.path("/account");
-          self.error = false;
-        } else {
-          $location.path("/login");
-          self.error = true;
-        }
-      });
-    };
-
-
-
+    
   }]);
