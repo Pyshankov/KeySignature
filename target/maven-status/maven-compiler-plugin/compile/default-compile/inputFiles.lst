@@ -1,6 +1,11 @@
 /home/pyshankov/Desktop/KeySignature/src/main/java/com/key/signature/domain/UserRepository.java
 /home/pyshankov/Desktop/KeySignature/src/main/java/com/key/signature/DemoApplication.java
 /home/pyshankov/Desktop/KeySignature/src/main/java/com/key/signature/filter/SimpleCORSFilter.java
+/home/pyshankov/Desktop/KeySignature/src/main/java/com/key/signature/filter/KeyHandWritingFilter.java
 /home/pyshankov/Desktop/KeySignature/src/main/java/com/key/signature/security/SecurityConfig.java
+/home/pyshankov/Desktop/KeySignature/src/main/java/com/key/signature/utils/Utils.java
+/home/pyshankov/Desktop/KeySignature/src/main/java/com/key/signature/domain/UserValidator.java
 /home/pyshankov/Desktop/KeySignature/src/main/java/com/key/signature/utils/MathUtil.java
+/home/pyshankov/Desktop/KeySignature/src/main/java/com/key/signature/domain/UserExeption.java
 /home/pyshankov/Desktop/KeySignature/src/main/java/com/key/signature/domain/User.java
+/home/pyshankov/Desktop/KeySignature/src/main/java/com/key/signature/domain/UserEventHandler.java
